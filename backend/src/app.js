@@ -21,7 +21,7 @@ app.use(helmet())
 app.use(express.json({ limit: '2mb' }))
 app.use(cookieParser())
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: process.env.CLIENT_URL || 'https://real-time-chat-app-ai-prefered.onrender.com',
     credentials: true
 }))
 
