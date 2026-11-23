@@ -1,151 +1,203 @@
-Vartam – Real-Time Chat Application
-Vartam is a full-stack messaging application built with the MERN stack. It provides authenticated one-to-one messaging, live online presence, profile customization, and an AI chat assistant powered by Google Gemini.
-Features
-Authentication: User registration, login, and logout with JWT-based authentication stored in an HTTP-only cookie.
-Password security: Password hashing and verification with bcrypt.
-Real-time one-to-one chat: Socket.IO delivers messages instantly; messages are stored in MongoDB and can be loaded as conversation history.
-Online presence: Live online/offline status and presence snapshots.
-Redis integration: Redis-backed Socket.IO adapter and shared presence/rate-limit support.
-AI assistant: Ask questions through the Gemini API and retrieve saved AI conversation history.
-User search: Search and paginate through registered users.
-Profile customization: Update display name and profile photo (JPEG, PNG, or WebP).
-API protection: Authentication middleware, request validation, Helmet security headers, and rate limiting.
-Health endpoints: Liveness and readiness checks for deployment monitoring.
-Tech Stack
-Frontend: React, Vite, Tailwind CSS, React Router, Socket.IO Client, React Markdown
-Backend: Node.js, Express, MongoDB, Mongoose, Socket.IO, Redis, JWT, bcryptjs
-AI: Google Gemini API
-Project Structure
+Vartam – Real-Time Chat Application 💬
+
+Vartam is a full-stack real-time messaging application built using the MERN stack. It provides seamless one-to-one communication with real-time message delivery, online user presence, secure authentication, and an AI-powered chat assistant.
+
+The application combines modern web technologies with real-time communication to deliver a smooth and interactive messaging experience.
+
+✨ Features
+
+- 🔐 Secure Authentication – User registration and login using JWT authentication.
+- 🔑 Password Hashing – Secure password storage using bcrypt.
+- 💬 Real-Time Messaging – Instant one-to-one messaging powered by Socket.IO.
+- 🟢 Online User Presence – Live online/offline status tracking.
+- ⚡ Redis Integration – Redis-backed presence management and rate limiting.
+- 🤖 AI Chat Assistant – Integrated Google Gemini API for AI-powered conversations.
+- 👤 Profile Management – Update user profile details and profile pictures.
+- 🔍 User Search – Search and discover registered users.
+- 📄 Conversation History – Store and retrieve chat messages from MongoDB.
+- 🛡️ Protected Routes – Authentication middleware and API request validation.
+- 🚀 Health Check Endpoints – Backend liveness and readiness monitoring.
+
+🛠️ Tech Stack
+
+Frontend
+
+- React.js
+- Vite
+- Tailwind CSS
+- React Router
+- Socket.IO Client
+- React Markdown
+
+Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- Socket.IO
+- Redis
+- JSON Web Token (JWT)
+- bcryptjs
+- express-validator
+- Helmet
+
+AI Integration
+
+- Google Gemini API
+
+📂 Project Structure
+
 VartamChatApp/
+│
 ├── backend/
 │   ├── src/
-│   │   ├── config/          # MongoDB, Redis, environment configuration
-│   │   ├── controllers/     # Authentication, user, chat and AI logic
-│   │   ├── middlewares/     # Authentication and rate limiting
-│   │   ├── models/          # User, message, AI exchange and token models
-│   │   ├── routes/          # User and chat API routes
-│   │   ├── sockets/         # Socket.IO chat and presence events
-│   │   └── utils/           # Token utilities
-│   ├── test/                # Backend automated tests
-│   └── server.js
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── middlewares/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── sockets/
+│   │   └── utils/
+│   ├── test/
+│   ├── server.js
+│   └── .env.example
+│
 ├── frontend/
-│   └── src/
-│       ├── Pages/           # Signup, login and chat screens
-│       ├── api.js
-│       └── ...
-├── .gitignore
-└── README.md
-Requirements
-Node.js 22.12.0 or later
-npm
-MongoDB database
-Redis server (required for production readiness and shared real-time presence/rate limiting)
-Google AI API key for the Gemini assistant
-Run Locally
-1. Clone the repository
-git clone https://github.com/YOUR-USERNAME/Vartam-Real-Time-Chat-App.git
+│   ├── public/
+│   ├── src/
+│   └── .env.example
+│
+├── README.md
+└── .gitignore
+
+⚙️ Installation & Setup
+
+Prerequisites
+
+Make sure you have installed:
+
+- Node.js (22.12.0 or later)
+- npm
+- MongoDB
+- Redis
+- Google Gemini API Key
+
+1. Clone the Repository
+
+git clone https://github.com/YOUR-GITHUB-USERNAME/Vartam-Real-Time-Chat-App.git
+
 cd Vartam-Real-Time-Chat-App
-2. Configure environment variables
-Create local environment files from the examples:
-cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
-Set the values in backend/.env:
+
+2. Backend Setup
+
+cd backend
+npm install
+
+Create a ".env" file inside the backend folder and configure:
+
 PORT=8000
 NODE_ENV=development
 CLIENT_URL=http://localhost:5173
-TRUST_PROXY=
 MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_long_random_secret
+JWT_SECRET=your_jwt_secret
 REDIS_HOST=your_redis_host
 REDIS_PORT=6379
 REDIS_PASSWORD=your_redis_password
 REDIS_TLS=false
 GOOGLE_AI_KEY=your_google_ai_api_key
-Set the frontend URL in frontend/.env:
+
+3. Frontend Setup
+
+Open another terminal:
+
+cd frontend
+npm install
+
+Create a ".env" file inside the frontend folder:
+
 VITE_API_URL=http://localhost:8000
-Use the values required by your own MongoDB and Redis providers. Do not commit real credentials.
-3. Install dependencies
-Run from the project root:
-npm --prefix backend ci
-npm --prefix frontend ci
-4. Start the application
-Start the backend in one terminal:
-npm --prefix backend run dev
-Start the frontend in another terminal:
-npm --prefix frontend run dev
-Open the local URL printed by Vite (normally http://localhost:5173).
-API Overview
-All /chat endpoints require authentication.
-Method
-Endpoint
-Description
-POST
-/users/signup
-Register a new user
-POST
-/users/login
-Log in
-POST
-/users/logout
-Log out and invalidate the token
-GET
-/users/me
-Get the authenticated user's profile
-PATCH
-/users/me
-Update profile name/photo
-GET
-/chat/users
-Search and paginate users
-GET
-/chat/:userId/messages
-Load one-to-one conversation history
-POST
-/chat/ai
-Send a prompt to the Gemini assistant
-GET
-/chat/ai/messages
-Load saved AI conversation history
-GET
-/health/live
-Liveness check
-GET
-/health/ready
-Readiness check
-Socket.IO Events
-Event
-Direction
-Purpose
-chat:send
-Client → server
-Send a message to another user
-chat:message
-Server → client
-Deliver a new message
-presence:snapshot
-Server → client
-Initial online-users snapshot
-presence:update
-Server → clients
-Notify online/offline changes
-profile:update
-Server → clients
-Notify profile-photo updates
-Tests and Production Build
+
+4. Run the Application
+
+Start Backend:
+
+cd backend
+npm run dev
+
+Start Frontend:
+
+cd frontend
+npm run dev
+
+Open the local URL provided by Vite in your browser.
+
+🔌 API Endpoints
+
+Method| Endpoint| Description
+POST| "/users/signup"| Register a new user
+POST| "/users/login"| Login user
+POST| "/users/logout"| Logout user
+GET| "/users/me"| Get current user
+PATCH| "/users/me"| Update user profile
+GET| "/chat/users"| Search and retrieve users
+GET| "/chat/:userId/messages"| Get conversation messages
+POST| "/chat/ai"| Send prompt to AI assistant
+GET| "/chat/ai/messages"| Get AI conversation history
+GET| "/health/live"| Backend liveness check
+GET| "/health/ready"| Backend readiness check
+
+⚡ Real-Time Socket Events
+
+Event| Description
+"chat:send"| Send a message
+"chat:message"| Receive a real-time message
+"presence:snapshot"| Get online users
+"presence:update"| Receive online/offline updates
+"profile:update"| Receive profile updates
+
+🧪 Testing
+
 Run backend tests:
-npm --prefix backend test
+
+cd backend
+npm test
+
 Build the frontend:
-npm --prefix frontend run build
-Deployment Notes
-The frontend and backend can be deployed as separate services.
-Backend root directory: backend; install command: npm ci; start command: npm start.
-Frontend root directory: frontend; install command: npm ci; build command: npm run build; publish directory: dist.
-Set VITE_API_URL to the deployed backend's HTTPS origin at frontend build time.
-Set CLIENT_URL to the exact deployed frontend HTTPS origin on the backend.
-Configure MongoDB, Redis, JWT_SECRET, and GOOGLE_AI_KEY as hosting-provider environment variables.
-Use REDIS_TLS=true if your Redis provider requires TLS.
-Configure HTTPS and the appropriate trusted proxy setting for your hosting environment.
-Use /health/live and /health/ready for liveness and readiness probes.
-Current Scope / Limitations
-The current implementation supports email-and-password authentication and one-to-one text messaging. SMS/mobile OTP verification is not implemented yet. Group chats, voice/video calls, and end-to-end encryption are also not part of the current implementation.
-Built as a full-stack portfolio project.
+
+cd frontend
+npm run build
+
+🔒 Security
+
+- JWT-based authentication.
+- HTTP-only authentication cookies.
+- Password hashing using bcrypt.
+- Protected API routes.
+- Request validation.
+- Rate limiting.
+- Security headers using Helmet.
+- Environment variables for sensitive configuration.
+
+Important: Never commit ".env" files, API keys, passwords, or database credentials to GitHub.
+
+🚀 Future Enhancements
+
+- Mobile number OTP verification.
+- Message read receipts.
+- Typing indicators.
+- Image and file sharing.
+- Group conversations.
+- Message editing and deletion.
+- Voice and video calling.
+- End-to-end encryption.
+
+👨‍💻 Developer
+
+Developed as a full-stack MERN portfolio project.
+
+GitHub: https://github.com/YOUR-GITHUB-USERNAME
+
+---
+
+⭐ If you like this project, consider giving it a star!
